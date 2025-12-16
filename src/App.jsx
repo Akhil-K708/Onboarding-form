@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 // BACKEND API BASE URL
-const API_BASE_URL = "http://192.168.0.217:8080";
+const API_BASE_URL = "http://192.168.0.110:8080";
 
 function App() {
   // --- STATE VARIABLES ---
@@ -20,7 +20,8 @@ function App() {
 
   // 2. Education Details
   const [collegeName, setCollegeName] = useState(''); 
-  const [passYear, setPassYear] = useState('');       
+  // Current Year ni default ga set chesthunnam
+  const [passYear, setPassYear] = useState(new Date().getFullYear().toString());       
   const [graduated, setGraduated] = useState('true'); 
 
   // 3. File Storage
@@ -37,13 +38,12 @@ function App() {
     const file = e.target.files[0];
     
     if (file) {
-        // 1MB = 1024 * 1024 bytes = 1,048,576 bytes
         if (file.size > 1048576) {
             alert(`File size exceeds 1MB! Please upload a smaller file.`);
-            e.target.value = null; // Clear the input
-            setFileState(null);    // Clear state
+            e.target.value = null;
+            setFileState(null);
         } else {
-            setFileState(file);    // Valid file
+            setFileState(file);
         }
     }
   };
@@ -59,9 +59,9 @@ function App() {
       return;
     }
 
-    setToken(urlToken); 
+    setToken(urlToken);
 
-    fetch(`${API_BASE_URL}/api/offer/view?token=${urlToken}`) 
+    fetch(`${API_BASE_URL}/api/offer/view?token=${urlToken}`)
       .then(async (response) => {
         if (response.ok) {
            setIsValid(true);
@@ -84,7 +84,6 @@ function App() {
   const handleUpload = async (e) => {
     e.preventDefault();
     
-    // Validation Checks
     if(!fullName || !dob || !phone || !address || !collegeName || !passYear) {
         alert("Please fill in all personal and education details.");
         return;
@@ -98,14 +97,21 @@ function App() {
     setUploadStatus('Uploading details & documents securely... Please wait.');
 
     const formData = new FormData();
-    formData.append("token", token); 
-    formData.append("fullName", fullName);
-    formData.append("dob", dob);
-    formData.append("phone", phone);
-    formData.append("address", address);
-    formData.append("collegeName", collegeName);
-    formData.append("passingYear", passYear);
-    formData.append("graduated", graduated === 'true');
+    formData.append("token", token);
+
+    const onboardingData = {
+        fullName: fullName,
+        dob: dob,
+        phone: phone,
+        address: address,
+        collegeName: collegeName,
+        passingYear: parseInt(passYear),
+        graduated: graduated === 'true'
+    };
+
+    formData.append("data", new Blob([JSON.stringify(onboardingData)], {
+        type: "application/json"
+    }));
 
     formData.append("resume", resume);
     formData.append("photo", photo);
@@ -238,9 +244,13 @@ function App() {
               <div className="input-group">
                 <label>Passing Year <span style={{color: 'red'}}>*</span></label>
                 <input 
-                  type="number" 
+                  type="text" 
+                  maxLength="4"
                   value={passYear}
-                  onChange={(e) => setPassYear(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, ''); // Non-digits ni allow cheyadhu
+                    setPassYear(val);
+                  }}
                   placeholder="YYYY"
                   className="text-input"
                   required 
@@ -252,68 +262,42 @@ function App() {
           <h3 className="section-title" style={{marginTop:'30px'}}>Upload Documents</h3>
           <div className="form-grid">
               
-              {/* 1. Resume */}
               <div className="input-group">
-                <label>
-                    Resume / CV <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span>
-                </label>
+                <label>Resume / CV <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
                 <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e, setResume)} required />
               </div>
 
-              {/* 2. Photo */}
               <div className="input-group">
-                <label>
-                    Passport Size Photo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span>
-                </label>
+                <label>Passport Size Photo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
                 <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setPhoto)} required />
               </div>
 
-              {/* 3. Aadhaar */}
               <div className="input-group">
-                <label>
-                    Aadhaar Card <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span>
-                </label>
+                <label>Aadhaar Card <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
                 <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setAadhaar)} required />
               </div>
 
-              {/* 4. PAN */}
               <div className="input-group">
-                <label>
-                    PAN Card <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span>
-                </label>
+                <label>PAN Card <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
                 <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setPan)} required />
               </div>
 
-              {/* 5. 10th Memo */}
               <div className="input-group">
-                <label>
-                    10th Class Memo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span>
-                </label>
+                <label>10th Class Memo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
                 <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setSscMemo)} required />
               </div>
 
-              {/* 6. Inter Memo */}
               <div className="input-group">
-                <label>
-                    Intermediate Memo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span>
-                </label>
+                <label>Intermediate Memo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
                 <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setInterMemo)} required />
               </div>
 
-              {/* 7. Degree/Sem Memo */}
               <div className="input-group">
                 <label style={{color: graduated === 'false' ? '#d92586' : '#444'}}>
-                    {graduated === 'false' 
-                        ? 'Latest Semester Marks Memo' 
-                        : 'Degree Certificate / OD'}
+                    {graduated === 'false' ? 'Latest Semester Marks Memo' : 'Degree Certificate / OD'}
                     <span style={{fontSize:'12px', color:'#777'}}> (Max 1MB)</span> <span style={{color: 'red'}}>*</span>
                 </label>
-                <input 
-                    type="file" 
-                    accept=".pdf,.jpg,.png" 
-                    onChange={(e) => handleFileChange(e, setDegreeDoc)} 
-                    required 
-                />
+                <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setDegreeDoc)} required />
               </div>
 
           </div>
