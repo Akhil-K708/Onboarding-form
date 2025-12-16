@@ -1,0 +1,250 @@
+/* Global Styles - Anasol Consultancy Theme */
+body {
+  /* Soft professional background */
+  background: linear-gradient(135deg, #f6f8fd 0%, #f1f4f9 100%);
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Main Container */
+.container {
+  width: 100%;
+  max-width: 600px; /* Slightly wider for better spacing */
+  margin: auto;
+}
+
+/* Company Logo Area */
+.logo-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.logo-img {
+    height: 70px; /* Koncham size penchanu */
+    width: auto;
+    display: block;
+    margin: 0 auto 10px auto;
+    
+    /* IDI MAGIC LINE BRO: */
+    mix-blend-mode: multiply; 
+    
+    /* Just in case edges sharp ga unte smooth chestundi */
+    border-radius: 4px; 
+}
+.company-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2a1b5e; /* Deep Purple from logo */
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+}
+
+/* The Main Card */
+.card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  /* Soft shadow with a hint of purple */
+  box-shadow: 0 10px 30px rgba(42, 27, 94, 0.08);
+  border: 1px solid rgba(42, 27, 94, 0.05);
+}
+
+/* Headings & Text */
+h1 {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2a1b5e; /* Deep Purple */
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+p.sub-text {
+  text-align: center;
+  color: #636e72;
+  margin-bottom: 35px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+h3.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2a1b5e; /* Deep Purple */
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f2f7;
+}
+
+/* Step Labels */
+.step-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #ff6b35; /* Orange accent color from logo */
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Offer Preview Section */
+.offer-section {
+    background-color: #fbfbfc;
+    border: 1px solid #eef0f4;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 35px;
+}
+
+.file-preview-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 15px 20px;
+    border: 1px solid #e0e4ea;
+    border-radius: 8px;
+    margin-top: 15px;
+    transition: border-color 0.2s;
+}
+.file-preview-card:hover {
+    border-color: #ff6b35; /* Orange highlight */
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 600;
+    color: #2d3436;
+}
+
+.file-icon {
+    font-size: 28px;
+    color: #ff6b35; /* Orange icon */
+}
+
+/* Form Inputs */
+.input-group {
+  margin-bottom: 25px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+}
+
+input[type="file"] {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  color: #555;
+  background-color: #fbfbfc;
+  border: 2px solid #e1e5e9;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+input[type="file"]:hover, input[type="file"]:focus {
+    border-color: #ff6b35; /* Orange focus */
+    background-color: #fff;
+    outline: none;
+}
+
+
+/* Buttons */
+/* Primary Button with Anasol Gradient */
+.btn-primary {
+  /* The Gradient from the logo */
+  background: linear-gradient(135deg, #ff6b35 0%, #d92586 50%, #8e2de2 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  width: 100%;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(217, 37, 134, 0.3); /* Purple-pink shadow */
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px); /* Subtle lift effect */
+  box-shadow: 0 6px 20px rgba(217, 37, 134, 0.4);
+}
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* Secondary Button (View Offer) */
+.btn-secondary {
+    background-color: white;
+    color: #d92586; /* Pink/Purple color */
+    border: 2px solid #d92586;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 700;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #d92586 0%, #8e2de2 100%);
+    border-color: transparent;
+    color: white;
+}
+
+
+/* Error & Status */
+.error-card {
+    text-align: center;
+    padding: 40px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    border-top: 5px solid #e74c3c;
+}
+.error-title {
+  color: #e74c3c;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+.status-msg {
+  margin-top: 25px;
+  text-align: center;
+  font-weight: 600;
+  color: white;
+  padding: 15px;
+  background: linear-gradient(135deg, #2ecc71, #26a65b); /* Green gradient for success */
+  border-radius: 6px;
+  box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2);
+}
+
+/* Add this to src/App.css */
+.text-input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e1e5e9;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fbfbfc;
+  color: #333;
+  box-sizing: border-box; /* Important for padding */
+}
+.text-input:focus {
+    border-color: #ff6b35;
+    outline: none;
+    background-color: #fff;
+}
