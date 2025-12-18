@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 // BACKEND API BASE URL
-const API_BASE_URL = "http://192.168.0.110:8080";
+const API_BASE_URL = "http://192.168.0.111:8080";
 
 function App() {
   // --- STATE VARIABLES ---
@@ -148,7 +148,7 @@ function App() {
     <div className="container">
       
       <div className="logo-header">
-          <img src="/logo.png" alt="Anasol Consultancy" className="logo-img" />
+          <img src="/anasol-logo.png" alt="Anasol Consultancy" className="logo-img" />
           <div className="company-name">Anasol Consultancy Services Pvt Ltd</div>
       </div>
 
