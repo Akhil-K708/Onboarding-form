@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-// BACKEND API BASE URL
+// BACKEND API BASE URL (Must remain same)
 const API_BASE_URL = "http://192.168.0.111:8080";
 
 function App() {
-  // --- STATE VARIABLES ---
+  // --- STATE VARIABLES (UNCHANGED) ---
   const [loading, setLoading] = useState(true);
   const [isValid, setIsValid] = useState(false);
   const [isExpired, setIsExpired] = useState(false);
@@ -20,7 +20,6 @@ function App() {
 
   // 2. Education Details
   const [collegeName, setCollegeName] = useState(''); 
-  // Current Year ni default ga set chesthunnam
   const [passYear, setPassYear] = useState(new Date().getFullYear().toString());       
   const [graduated, setGraduated] = useState('true'); 
 
@@ -33,7 +32,7 @@ function App() {
   const [interMemo, setInterMemo] = useState(null);  
   const [degreeDoc, setDegreeDoc] = useState(null);  
 
-  // --- HELPER: FILE SIZE VALIDATION (Max 1MB) ---
+  // --- HELPER: FILE SIZE VALIDATION (UNCHANGED) ---
   const handleFileChange = (e, setFileState) => {
     const file = e.target.files[0];
     
@@ -48,7 +47,7 @@ function App() {
     }
   };
 
-  // --- STEP 1: VALIDATE LINK ON LOAD ---
+  // --- STEP 1: VALIDATE LINK ON LOAD (UNCHANGED) ---
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const urlToken = searchParams.get('token');
@@ -80,7 +79,7 @@ function App() {
 
   }, []);
 
-  // --- STEP 2: HANDLE FORM SUBMIT ---
+  // --- STEP 2: HANDLE FORM SUBMIT (UNCHANGED) ---
   const handleUpload = async (e) => {
     e.preventDefault();
     
@@ -138,182 +137,205 @@ function App() {
     }
   };
 
-  // --- UI RENDER ---
+  // --- UI RENDER (UPDATED DESIGN STRUCTURE ONLY) ---
 
-  if (loading) return <div className="container"><p style={{textAlign:'center'}}>Verifying secure link...</p></div>;
+  if (loading) return <div className="container"><p style={{textAlign:'center', color:'#666'}}>Verifying secure link...</p></div>;
   if (isExpired) return <div className="container"><div className="error-card"><h2 className="error-title">Link Expired</h2></div></div>;
   if (!isValid) return <div className="container"><div className="error-card"><h2 className="error-title">Invalid Link</h2></div></div>;
 
   return (
     <div className="container">
       
+      {/* Branding Header */}
       <div className="logo-header">
           <img src="/anasol-logo.png" alt="Anasol Consultancy" className="logo-img" />
           <div className="company-name">Anasol Consultancy Services Pvt Ltd</div>
       </div>
 
       <div className="card">
-        <h1>Onboarding Form</h1>
-        <p className="sub-text">
-            Please fill your details and upload all mandatory certificates.
-        </p>
-
-        <form onSubmit={handleUpload}>
-          
-          <h3 className="section-title">Personal Details</h3>
-          <div className="form-grid">
-              
-              <div className="input-group">
-                <label>Full Name <span style={{color: 'red'}}>*</span></label>
-                <input 
-                  type="text" 
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="As per Aadhaar"
-                  className="text-input"
-                  required 
-                />
-              </div>
-
-              <div className="input-group">
-                <label>Date of Birth <span style={{color: 'red'}}>*</span></label>
-                <input 
-                  type="date" 
-                  value={dob}
-                  onClick={(e) => e.target.showPicker && e.target.showPicker()} 
-                  onChange={(e) => setDob(e.target.value)}
-                  className="text-input"
-                  required 
-                />
-              </div>
-
-              <div className="input-group">
-                <label>Phone Number <span style={{color: 'red'}}>*</span></label>
-                <input 
-                  type="tel" 
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Mobile Number"
-                  className="text-input"
-                  required 
-                />
-              </div>
-
-              <div className="input-group">
-                <label>Address <span style={{color: 'red'}}>*</span></label>
-                <textarea 
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Current Residential Address"
-                  className="text-input"
-                  rows="1"
-                  style={{resize:'none', height:'46px', paddingTop:'10px'}}
-                  required 
-                />
-              </div>
-
-          </div>
-
-          <h3 className="section-title" style={{marginTop:'20px'}}>Education Details</h3>
-          <div className="form-grid">
-              
-              <div className="input-group">
-                <label>College Name <span style={{color: 'red'}}>*</span></label>
-                <input 
-                  type="text" 
-                  value={collegeName}
-                  onChange={(e) => setCollegeName(e.target.value)}
-                  placeholder="University / College"
-                  className="text-input"
-                  required 
-                />
-              </div>
-
-              <div className="input-group">
-                  <label>Graduation Status <span style={{color: 'red'}}>*</span></label>
-                  <select 
-                    className="text-input" 
-                    value={graduated}
-                    onChange={(e) => setGraduated(e.target.value)}
-                  >
-                      <option value="true">Completed (Graduated)</option>
-                      <option value="false">Pursuing (Intern/Student)</option>
-                  </select>
-              </div>
-
-              <div className="input-group">
-                <label>Passing Year <span style={{color: 'red'}}>*</span></label>
-                <input 
-                  type="text" 
-                  maxLength="4"
-                  value={passYear}
-                  onChange={(e) => {
-                    const val = e.target.value.replace(/\D/g, ''); // Non-digits ni allow cheyadhu
-                    setPassYear(val);
-                  }}
-                  placeholder="YYYY"
-                  className="text-input"
-                  required 
-                />
-              </div>
-
-          </div>
-
-          <h3 className="section-title" style={{marginTop:'30px'}}>Upload Documents</h3>
-          <div className="form-grid">
-              
-              <div className="input-group">
-                <label>Resume / CV <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
-                <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e, setResume)} required />
-              </div>
-
-              <div className="input-group">
-                <label>Passport Size Photo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
-                <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setPhoto)} required />
-              </div>
-
-              <div className="input-group">
-                <label>Aadhaar Card <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
-                <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setAadhaar)} required />
-              </div>
-
-              <div className="input-group">
-                <label>PAN Card <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
-                <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setPan)} required />
-              </div>
-
-              <div className="input-group">
-                <label>10th Class Memo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
-                <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setSscMemo)} required />
-              </div>
-
-              <div className="input-group">
-                <label>Intermediate Memo <span style={{fontSize:'12px', color:'#777'}}>(Max 1MB)</span> <span style={{color: 'red'}}>*</span></label>
-                <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setInterMemo)} required />
-              </div>
-
-              <div className="input-group">
-                <label style={{color: graduated === 'false' ? '#d92586' : '#444'}}>
-                    {graduated === 'false' ? 'Latest Semester Marks Memo' : 'Degree Certificate / OD'}
-                    <span style={{fontSize:'12px', color:'#777'}}> (Max 1MB)</span> <span style={{color: 'red'}}>*</span>
-                </label>
-                <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setDegreeDoc)} required />
-              </div>
-
-          </div>
-
-          <button type="submit" className="btn-primary" style={{marginTop: '30px'}}>
-            Submit Onboarding Details
-          </button>
-        </form>
         
-        {uploadStatus && (
-            <div className="status-msg" style={{
-                background: uploadStatus.includes('Success') ? 'linear-gradient(135deg, #2ecc71, #26a65b)' : '#e74c3c'
-            }}>
-                {uploadStatus}
+        {/* Card Header Section */}
+        <div className="card-header">
+            <h1>Onboarding Portal</h1>
+            <p className="sub-text">
+                Complete your profile and upload mandatory certificates to proceed.
+            </p>
+        </div>
+
+        <div className="form-body">
+            <form onSubmit={handleUpload}>
+            
+            {/* Section 1: Personal Details */}
+            <div className="form-section">
+                <h3 className="section-title">Personal Details</h3>
+                <div className="form-grid">
+                    
+                    <div className="input-group full-width">
+                        <label>Full Name <span style={{color: '#ef4444'}}>*</span></label>
+                        <input 
+                        type="text" 
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="As per Aadhaar"
+                        className="text-input"
+                        required 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label>Date of Birth <span style={{color: '#ef4444'}}>*</span></label>
+                        <input 
+                        type="date" 
+                        value={dob}
+                        onClick={(e) => e.target.showPicker && e.target.showPicker()} 
+                        onChange={(e) => setDob(e.target.value)}
+                        className="text-input"
+                        required 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label>Phone Number <span style={{color: '#ef4444'}}>*</span></label>
+                        <input 
+                        type="tel" 
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="Mobile Number"
+                        className="text-input"
+                        required 
+                        />
+                    </div>
+
+                    <div className="input-group full-width">
+                        <label>Address <span style={{color: '#ef4444'}}>*</span></label>
+                        <textarea 
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        placeholder="Current Residential Address"
+                        className="text-input"
+                        rows="2"
+                        required 
+                        />
+                    </div>
+
+                </div>
             </div>
-        )}
+
+            {/* Section 2: Education Details */}
+            <div className="form-section">
+                <h3 className="section-title">Education Details</h3>
+                <div className="form-grid">
+                    
+                    <div className="input-group full-width">
+                        <label>College Name <span style={{color: '#ef4444'}}>*</span></label>
+                        <input 
+                        type="text" 
+                        value={collegeName}
+                        onChange={(e) => setCollegeName(e.target.value)}
+                        placeholder="University / College"
+                        className="text-input"
+                        required 
+                        />
+                    </div>
+
+                    <div className="input-group">
+                        <label>Graduation Status <span style={{color: '#ef4444'}}>*</span></label>
+                        <select 
+                            className="text-input" 
+                            value={graduated}
+                            onChange={(e) => setGraduated(e.target.value)}
+                        >
+                            <option value="true">Completed (Graduated)</option>
+                            <option value="false">Pursuing (Intern/Student)</option>
+                        </select>
+                    </div>
+
+                    <div className="input-group">
+                        <label>Passing Year <span style={{color: '#ef4444'}}>*</span></label>
+                        <input 
+                        type="text" 
+                        maxLength="4"
+                        value={passYear}
+                        onChange={(e) => {
+                            const val = e.target.value.replace(/\D/g, ''); 
+                            setPassYear(val);
+                        }}
+                        placeholder="YYYY"
+                        className="text-input"
+                        required 
+                        />
+                    </div>
+
+                </div>
+            </div>
+
+            {/* Section 3: Upload Documents */}
+            <div className="form-section">
+                <h3 className="section-title">
+                    Upload Documents 
+                    <span style={{fontSize:'12px', fontWeight:'normal', color:'#6b7280', marginLeft:'auto'}}>
+                        Max size: 1MB per file
+                    </span>
+                </h3>
+                
+                <div className="form-grid">
+                    
+                    <div className="input-group">
+                        <label>Resume / CV <span style={{color: '#ef4444'}}>*</span></label>
+                        <input type="file" accept=".pdf,.doc,.docx" onChange={(e) => handleFileChange(e, setResume)} required />
+                    </div>
+
+                    <div className="input-group">
+                        <label>Passport Size Photo <span style={{color: '#ef4444'}}>*</span></label>
+                        <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, setPhoto)} required />
+                    </div>
+
+                    <div className="input-group">
+                        <label>Aadhaar Card <span style={{color: '#ef4444'}}>*</span></label>
+                        <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setAadhaar)} required />
+                    </div>
+
+                    <div className="input-group">
+                        <label>PAN Card <span style={{color: '#ef4444'}}>*</span></label>
+                        <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setPan)} required />
+                    </div>
+
+                    <div className="input-group">
+                        <label>10th Class Memo <span style={{color: '#ef4444'}}>*</span></label>
+                        <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setSscMemo)} required />
+                    </div>
+
+                    <div className="input-group">
+                        <label>Intermediate Memo <span style={{color: '#ef4444'}}>*</span></label>
+                        <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setInterMemo)} required />
+                    </div>
+
+                    <div className="input-group full-width">
+                        <label style={{color: graduated === 'false' ? '#d92586' : '#374151'}}>
+                            {graduated === 'false' ? 'Latest Semester Marks Memo' : 'Degree Certificate / OD'}
+                            <span style={{color: '#ef4444'}}> *</span>
+                        </label>
+                        <input type="file" accept=".pdf,.jpg,.png" onChange={(e) => handleFileChange(e, setDegreeDoc)} required />
+                    </div>
+
+                </div>
+            </div>
+
+            <button type="submit" className="btn-primary">
+                Submit Onboarding Details
+            </button>
+            </form>
+            
+            {uploadStatus && (
+                <div className="status-msg" style={{
+                    background: uploadStatus.includes('Success') ? '#d1fae5' : '#fee2e2',
+                    color: uploadStatus.includes('Success') ? '#065f46' : '#991b1b',
+                    border: `1px solid ${uploadStatus.includes('Success') ? '#34d399' : '#f87171'}`
+                }}>
+                    {uploadStatus}
+                </div>
+            )}
+        </div>
       </div>
     </div>
   );
